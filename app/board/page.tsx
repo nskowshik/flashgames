@@ -1,26 +1,28 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Card from "@/app/components/Card";
-import { getBoard } from "@/app/api/board";
+import { useState, useEffect } from 'react';
+import Card from '@/app/components/Card';
+import { getBoard } from '@/app/api/board';
 
 export default function Board() {
   const [boardData, setBoardData] = useState<any>([]);
   const [size, setSize] = useState<any>({});
   const [firstCard, setFirstCard] = useState<any>(null);
-  const [secondCard, setSecondCard] = useState<any>(null);
   const [moves, setMoves] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+  const [lockMove, setLockMove] = useState(false);
 
   const flipSelectedCards = (card: any) => {
-    if (!firstCard && card?.cardId) {
+    if (lockMove || card?.flipped) return;
+
+    if (!firstCard && card?.id) {
       setFirstCard(card);
       const updatedData = [...boardData];
       updatedData[card.cardId].flipped = !updatedData[card.cardId].flipped;
       setBoardData(updatedData);
     }
-    if (firstCard && card?.cardId) {
-      setSecondCard(card);
+    if (firstCard && card?.id) {
+      setMoves((prev) => prev + 1);
+      setLockMove(true);
       const updatedData = [...boardData];
       updatedData[card.cardId].flipped = !updatedData[card.cardId].flipped;
       setBoardData(updatedData);
@@ -31,9 +33,11 @@ export default function Board() {
           updatedData[card.cardId].flipped = false;
           setBoardData(updatedData);
           setFirstCard(null);
-          setSecondCard(null);
+          setLockMove(false);
         }, 1000);
       } else {
+        setFirstCard(null);
+        setLockMove(false);
       }
     }
   };
@@ -67,13 +71,16 @@ export default function Board() {
                   onClick={() => flipSelectedCards(cell)}
                 >
                   <span className="text-2xl font-bold text-white w-6 h-6 flex items-center justify-center">
-                    {cell?.flipped ? cell?.name : "?"}
+                    {cell?.flipped ? cell?.name : '?'}
                   </span>
                 </Card>
               </div>
             ))}
         </div>
       ))}
+      <div className="text-center mt-5">
+        <p className="text-lg font-bold text-white">Moves: {moves}</p>
+      </div>
     </div>
   );
 }
