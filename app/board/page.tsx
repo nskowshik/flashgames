@@ -59,28 +59,53 @@ export default function Board() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4">
-      {Array.from({ length: size.row }, (_, rowIndex) => (
-        <div key={`row-${rowIndex}`} className="flex gap-4">
-          {boardData
-            ?.slice(rowIndex * size.col, (rowIndex + 1) * size.col)
-            .map((cell: any, colIndex: any) => (
-              <div key={`col-${colIndex}`} className="flex gap-4">
-                <Card
-                  key={`card-${rowIndex}-${colIndex}`}
-                  onClick={() => flipSelectedCards(cell)}
-                >
-                  <span className="text-2xl font-bold text-white w-6 h-6 flex items-center justify-center">
-                    {cell?.flipped ? cell?.name : '?'}
-                  </span>
-                </Card>
-              </div>
-            ))}
-        </div>
-      ))}
-      <div className="text-center mt-5">
-        <p className="text-lg font-bold text-white">Moves: {moves}</p>
+    <>
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: size.row }, (_, rowIndex) => (
+          <div key={`row-${rowIndex}`} className="flex gap-4">
+            {boardData
+              ?.slice(rowIndex * size.col, (rowIndex + 1) * size.col)
+              .map((cell: any, colIndex: any) => (
+                <div key={`col-${colIndex}`} className="flex gap-4">
+                  <Card
+                    key={`card-${rowIndex}-${colIndex}`}
+                    onClick={() => flipSelectedCards(cell)}
+                  >
+                    <span className="text-2xl font-bold text-white w-6 h-6 flex items-center justify-center">
+                      {cell?.flipped ? cell?.name : '?'}
+                    </span>
+                  </Card>
+                </div>
+              ))}
+          </div>
+        ))}
       </div>
-    </div>
+      <div className="text-center mt-5">
+        {boardData?.every((el: any) => el.flipped) ? (
+          <p className="text-lg font-bold text-white">
+            Congratulations! You won in {moves} moves!
+          </p>
+        ) : (
+          <p className="text-lg font-bold text-white">Moves: {moves}</p>
+        )}
+
+        <button
+          onClick={() => {
+            getBoard().then((data) => {
+              flipCard(data.board);
+              setSize(data.size);
+              setMoves(0);
+              setFirstCard(null);
+              setLockMove(false);
+            });
+          }}
+          className="bg-neutral border border-neutral-200 rounded-lg px-4 py-2 mt-4 cursor-pointer"
+          type="button"
+          disabled={moves === 0}
+        >
+          Restart
+        </button>
+      </div>
+    </>
   );
 }
