@@ -33,13 +33,12 @@ export default function Home() {
 
       <div className="flex flex-wrap justify-center gap-6">
         {games.map((game) => (
-          <Card
-            key={game.id}
-            onClick={() => handleGameClick(game.route)}
-            icon={game.icon}
-            description={game.description}
-          >
-            {game.name}
+          <Card key={game.id} onClick={() => handleGameClick(game.route)}>
+            <div className="flex flex-col items-center">
+              <div className="text-4xl mb-3">{game.icon}</div>
+              {game.name}
+              <div className="text-sm mt-2">{game.description}</div>
+            </div>
           </Card>
         ))}
       </div>
