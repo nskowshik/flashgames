@@ -3,18 +3,46 @@
 import { useRouter } from 'next/navigation';
 import Card from './components/Card';
 
+const games = [
+  {
+    id: 'memory',
+    name: 'Memory Match',
+    icon: '🧠',
+    description: 'Test your memory skills',
+    route: '/memory',
+  },
+];
+
 export default function Home() {
   const router = useRouter();
 
-  const handleBoardGameClick = () => {
-    router.push('/board');
+  const handleGameClick = (route: string) => {
+    router.push(route);
   };
 
   return (
-    <div className="flex flex-col flex-1 gap-4 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h1>Flash Games</h1>
+    <div className="flex flex-col flex-1 gap-8 items-center justify-center bg-zinc-50 font-sans dark:bg-black p-8">
+      <div className="text-center">
+        <h1 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+          Flash Games
+        </h1>
+        <p className="text-zinc-600 dark:text-zinc-400 text-lg">
+          Play classic games while waiting for your AI response
+        </p>
+      </div>
 
-      <Card onClick={handleBoardGameClick}>Board Game</Card>
+      <div className="flex flex-wrap justify-center gap-6">
+        {games.map((game) => (
+          <Card
+            key={game.id}
+            onClick={() => handleGameClick(game.route)}
+            icon={game.icon}
+            description={game.description}
+          >
+            {game.name}
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

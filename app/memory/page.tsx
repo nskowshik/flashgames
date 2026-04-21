@@ -60,6 +60,14 @@ export default function Board() {
 
   return (
     <>
+      <div className="text-center mb-8">
+        <h1 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+          🧠 Memory Match
+        </h1>
+        <p className="text-zinc-600 dark:text-zinc-400 text-lg">
+          Find all matching pairs!
+        </p>
+      </div>
       <div className="flex flex-col gap-4">
         {Array.from({ length: size.row }, (_, rowIndex) => (
           <div key={`row-${rowIndex}`} className="flex gap-4">
