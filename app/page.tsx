@@ -11,6 +11,13 @@ const games = [
     description: 'Test your memory skills',
     route: '/memory',
   },
+  {
+    id: '2048',
+    name: '2048',
+    icon: '🔢',
+    description: 'Slide and merge tiles to reach 2048',
+    route: '/2048',
+  },
 ];
 
 export default function Home() {
